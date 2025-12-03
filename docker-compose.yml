@@ -1,0 +1,33 @@
+services:
+  25rp20279_app:
+  build: .
+  container_name: 25rp20279_app
+  ports:
+    - "8085:80"   # host port changed from 8080 to 8085
+
+  25rp20279_db:
+    image: mysql:8.0
+    container_name: 25rp20279_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: example_password
+      MYSQL_DATABASE: 25rp20279_shareride_db
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
+  25rp20279_phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: 25rp20279_phpmyadmin
+    environment:
+      PMA_HOST: 25rp20279_db
+      MYSQL_ROOT_PASSWORD: example_password
+    ports:
+      - "8081:80"
+    depends_on:
+      - 25rp20279_db
+
+volumes:
+  db_data:
+
